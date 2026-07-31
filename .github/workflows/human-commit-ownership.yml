@@ -68,3 +68,22 @@ jobs:
                  "See https://github.com/evolution-gaming/.github/blob/main/AI_POLICY.md"
             exit 1
           fi
+
+      - name: Link AI policy on failure
+        if: failure()
+        shell: bash
+        run: |
+          POLICY="https://github.com/evolution-gaming/.github/blob/main/AI_POLICY.md"
+          echo "::error::AI tools must not be listed as commit authors or co-authors. Remove the trailer (rebase/amend, then force-push). AI Contribution Policy: $POLICY"
+          {
+            echo ""
+            echo "## ❌ AI Contribution Policy"
+            echo ""
+            echo "AI tools may assist with development, but they must not be listed as commit"
+            echo "authors or co-authors — a human author takes responsibility for every commit."
+            echo ""
+            echo "**Fix:** remove the AI trailer from the flagged commits (\`git rebase -i\` /"
+            echo "\`git commit --amend\`) and force-push the branch."
+            echo ""
+            echo "📄 [Read the full AI Contribution Policy]($POLICY)"
+          } >> "$GITHUB_STEP_SUMMARY"
