@@ -1,0 +1,41 @@
+name: Human Commit Ownership
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  merge_group:
+    types: [checks_requested]
+
+permissions:
+  contents: read
+
+jobs:
+  no-ai-attribution:
+    name: No AI authors or co-authors
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Check commit attribution
+        uses: commit-check/commit-check-action@bbb6580f01838e475563514f115ec7ef41c9ddc7 # v2.11.1
+        env:
+          CCHK_AI_ATTRIBUTION: "forbid"
+          CCHK_CONVENTIONAL_COMMITS: "false"
+          CCHK_SUBJECT_CAPITALIZED: "false"
+          CCHK_SUBJECT_IMPERATIVE: "false"
+          CCHK_ALLOW_EMPTY_COMMITS: "true"
+          CCHK_ALLOW_WIP_COMMITS: "true"
+          CCHK_REQUIRE_BODY: "false"
+          CCHK_REQUIRE_SIGNED_OFF_BY: "false"
+        with:
+          message: true
+          branch: false
+          author-name: false
+          author-email: false
+          pr-title: false
+          job-summary: true
+          pr-comments: false
