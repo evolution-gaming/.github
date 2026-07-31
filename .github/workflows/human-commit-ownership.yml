@@ -39,3 +39,32 @@ jobs:
           pr-title: false
           job-summary: true
           pr-comments: false
+
+      # commit-check v2.11.1 misses space-separated model names such as
+      # "Claude Opus 5 (1M context)"; anchor on AI noreply emails and
+      # tool-name-plus-version trailers until fixed upstream.
+      - name: Check AI attribution in trailers (supplemental)
+        shell: bash
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "merge_group" ]; then
+            BASE="${{ github.event.merge_group.base_sha }}"
+            HEAD="${{ github.event.merge_group.head_sha }}"
+          else
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          fi
+          PATTERN='^(co-authored-by|assisted-by):(.*<[^>]*noreply@anthropic\.com[^>]*>.*|[^<]*\b(claude|gpt|gemini|copilot|codex|cursor|aider|devin|windsurf|tabby)\b[^<]*[0-9].*)$'
+          FAILED=0
+          for sha in $(git rev-list "$BASE..$HEAD"); do
+            if git log -1 --format=%B "$sha" | grep -qiE "$PATTERN"; then
+              echo "::error::Commit $sha contains forbidden AI attribution:"
+              git log -1 --format=%B "$sha" | grep -iE "$PATTERN"
+              FAILED=1
+            fi
+          done
+          if [ "$FAILED" -ne 0 ]; then
+            echo "AI tools must not be listed as commit authors or co-authors." \
+                 "Remove the trailer (rebase/amend) and force-push." \
+                 "See https://github.com/evolution-gaming/.github/blob/main/AI_POLICY.md"
+            exit 1
+          fi
