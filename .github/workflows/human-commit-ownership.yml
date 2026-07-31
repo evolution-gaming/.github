@@ -1,4 +1,4 @@
-name: Human Commit Ownership
+name: AI Policy Check
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   no-ai-attribution:
-    name: No AI authors or co-authors
+    name: AI Policy Check
     runs-on: ubuntu-latest
 
     steps:
