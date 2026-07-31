@@ -1,7 +1,7 @@
 # AI Contribution Policy
 
 AI tools may assist with development, but a human author takes responsibility for every commit.
-The "No AI authors or co-authors" check enforces the first rule on all pull requests.
+The "AI Policy Check" enforces the first rule on all pull requests.
 
 * Never add a co-author trailer for AI tools in commit messages.
 * Avoid generating PR titles or descriptions with AI. If you do, keep them concise; humans read them.
