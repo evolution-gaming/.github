@@ -16,12 +16,12 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Check commit attribution
-        uses: commit-check/commit-check-action@bbb6580f01838e475563514f115ec7ef41c9ddc7 # v2.11.1
+        uses: commit-check/commit-check-action@d109324148a73dc758891d1d85924c912dbfd38b # v2.12.0
         env:
           CCHK_AI_ATTRIBUTION: "forbid"
           CCHK_CONVENTIONAL_COMMITS: "false"
@@ -40,9 +40,9 @@ jobs:
           job-summary: true
           pr-comments: false
 
-      # commit-check v2.11.1 misses space-separated model names such as
-      # "Claude Opus 5 (1M context)"; anchor on AI noreply emails and
-      # tool-name-plus-version trailers until fixed upstream.
+      # commit-check 2.12.2 now detects space-separated model names such as
+      # "Claude Fable 5 (1M context)", but only for claude/gpt/gemini in
+      # Co-authored-by. Keep covering Assisted-by and the other tool names.
       - name: Check AI attribution in trailers (supplemental)
         shell: bash
         run: |
