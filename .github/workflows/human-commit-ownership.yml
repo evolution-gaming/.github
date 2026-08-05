@@ -25,6 +25,7 @@ jobs:
         env:
           CCHK_AI_ATTRIBUTION: "forbid"
           CCHK_CONVENTIONAL_COMMITS: "false"
+          CCHK_SUBJECT_MAX_LENGTH: "150"
           CCHK_SUBJECT_CAPITALIZED: "false"
           CCHK_SUBJECT_IMPERATIVE: "false"
           CCHK_ALLOW_EMPTY_COMMITS: "true"
