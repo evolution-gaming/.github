@@ -1,0 +1,11 @@
+name: CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+
+jobs:
+  test:
+    uses: evolution-gaming/scala-github-actions/.github/workflows/ci.yml@v6
+    secrets: inherit
