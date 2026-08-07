@@ -1,0 +1,7 @@
+{
+  "name": "Scala Release",
+  "description": "Publish a tagged Scala release to Evolution's Artifactory, via the shared Evolution workflow.",
+  "iconName": "example",
+  "categories": ["Scala", "Publishing"],
+  "filePatterns": ["build.sbt$"]
+}

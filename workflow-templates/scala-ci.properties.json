@@ -1,0 +1,7 @@
+{
+  "name": "Scala CI",
+  "description": "Test, coverage, binary compatibility and formatting for a Scala project, via the shared Evolution workflow.",
+  "iconName": "example",
+  "categories": ["Scala", "Continuous integration"],
+  "filePatterns": ["build.sbt$"]
+}
