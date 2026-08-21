@@ -11,6 +11,7 @@ apply to every repository in the organization that does not define its own.
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Default contributing guide, shown when opening issues and pull requests. |
 | [SECURITY.md](SECURITY.md) | Default security policy, shown on the Security tab of every repository without its own. |
 | [.github/workflows/human-commit-ownership.yml](.github/workflows/human-commit-ownership.yml) | "AI Policy Check" — fails a pull request whose commits list an AI tool as author or co-author. |
+| [.github/workflows/security-txt-watch.yml](.github/workflows/security-txt-watch.yml) | "security.txt watch" — weekly check that opens an issue when the published security.txt drifts from the snapshot in [.github/security.txt](.github/security.txt), a reminder to update SECURITY.md. |
 
 GitHub picks up `CONTRIBUTING.md` and `SECURITY.md` automatically for repositories without their own
 copy. Workflows are
