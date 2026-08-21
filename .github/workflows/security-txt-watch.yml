@@ -1,0 +1,53 @@
+name: security.txt watch
+
+on:
+  schedule:
+    - cron: "30 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    name: security.txt watch
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Compare live security.txt with snapshot
+        id: compare
+        shell: bash
+        run: |
+          curl -fsSL --max-time 30 https://www.evolution.com/.well-known/security.txt -o live.txt
+          # The Expires line is renewed routinely and does not affect SECURITY.md
+          grep -iv '^expires:' .github/security.txt > snapshot.normalized
+          grep -iv '^expires:' live.txt > live.normalized
+          if ! diff -u snapshot.normalized live.normalized > changes.diff; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open reminder issue
+        if: steps.compare.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="security.txt changed, review SECURITY.md"
+          if gh issue list --repo "$GITHUB_REPOSITORY" --state open --json title --jq '.[].title' | grep -Fxq "$TITLE"; then
+            echo "Reminder issue already open, skipping."
+            exit 0
+          fi
+          {
+            echo "The published [security.txt](https://www.evolution.com/.well-known/security.txt) no longer matches the snapshot in this repository:"
+            echo ""
+            echo '```diff'
+            cat changes.diff
+            echo '```'
+            echo ""
+            echo "If the reporting contact or policy links changed, update [SECURITY.md](../blob/main/SECURITY.md) to match, then refresh the snapshot in \`.github/security.txt\` so this check goes quiet again."
+          } > body.md
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body-file body.md
