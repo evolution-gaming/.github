@@ -9,9 +9,11 @@ apply to every repository in the organization that does not define its own.
 | --- | --- |
 | [AI_POLICY.md](AI_POLICY.md) | AI Contribution Policy — AI may assist, a human owns every commit. |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Default contributing guide, shown when opening issues and pull requests. |
+| [SECURITY.md](SECURITY.md) | Default security policy, shown on the Security tab of every repository without its own. |
 | [.github/workflows/human-commit-ownership.yml](.github/workflows/human-commit-ownership.yml) | "AI Policy Check" — fails a pull request whose commits list an AI tool as author or co-author. |
 
-GitHub picks up `CONTRIBUTING.md` automatically for repositories without their own copy. Workflows are
+GitHub picks up `CONTRIBUTING.md` and `SECURITY.md` automatically for repositories without their own
+copy. Workflows are
 not inherited: copy `human-commit-ownership.yml` into a repository to enable the check there.
 
 ## Enabling the AI Policy Check
