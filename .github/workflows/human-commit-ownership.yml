@@ -54,7 +54,7 @@ jobs:
             BASE="${{ github.event.pull_request.base.sha }}"
             HEAD="${{ github.event.pull_request.head.sha }}"
           fi
-          PATTERN='^(co-authored-by|assisted-by):(.*<[^>]*noreply@anthropic\.com[^>]*>.*|[^<]*\b(claude|gpt|gemini|copilot|codex|cursor|aider|devin|windsurf|tabby)\b[^<]*[0-9].*)$'
+          PATTERN='^(co-authored-by|assisted-by):(.*<[^>]*noreply@anthropic\.com[^>]*>.*|[^<]*\b(claude|gpt|gemini|copilot|codex|cursor|aider|devin|windsurf|tabby|chonk)\b[^<]*[0-9].*)$'
           FAILED=0
           for sha in $(git rev-list "$BASE..$HEAD"); do
             if git log -1 --format=%B "$sha" | grep -qiE "$PATTERN"; then
